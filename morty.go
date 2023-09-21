@@ -216,7 +216,6 @@ var HTML_HEAD_CONTENT_TYPE string = `<meta http-equiv="Content-Type" content="te
 var MORTY_HTML_PAGE_START string = `<!doctype html>
 <html>
 <head>
-<title>MortyProxy</title>
 <meta name="viewport" content="width=device-width, initial-scale=1 , maximum-scale=1.0, user-scalable=1" />
 <style>
 html { height: 100%; }
@@ -233,15 +232,11 @@ h1 { font-size: 3em; }
 </head>
 <body>
 	<div class="container">
-		<h1>MortyProxy</h1>
 `
 
 var MORTY_HTML_PAGE_END string = `
 	</div>
 	<div class="footer">
-		<p>Morty rewrites web pages to exclude malicious HTML tags and CSS/HTML attributes. It also replaces external resource references to prevent third-party information leaks.<br />
-		<a href="https://github.com/asciimoo/morty">view on github</a>
-		</p>
 	</div>
 </body>
 </html>`
@@ -1033,7 +1028,6 @@ func (p *Proxy) serveExitMortyPage(ctx *fasthttp.RequestCtx, uri *url.URL) {
 	ctx.SetContentType("text/html")
 	ctx.SetStatusCode(403)
 	ctx.Write([]byte(MORTY_HTML_PAGE_START))
-	ctx.Write([]byte("<h2>You are about to exit MortyProxy</h2>"))
 	ctx.Write([]byte("<p>Following</p><p><a href=\""))
 	ctx.Write([]byte(html.EscapeString(uri.String())))
 	ctx.Write([]byte("\" rel=\"noreferrer\">"))
