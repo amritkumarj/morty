@@ -29,6 +29,8 @@ import (
 
 	"github.com/asciimoo/morty/config"
 	"github.com/asciimoo/morty/contenttype"
+
+
 )
 
 const (
@@ -54,6 +56,8 @@ var ALLOWED_CONTENTTYPE_FILTER contenttype.Filter = contenttype.NewFilterOr([]co
 	contenttype.NewFilterEquals("application", "xhtml", "xml"),
 	// css
 	contenttype.NewFilterEquals("text", "css", ""),
+	//js
+	contenttype.NewFilterEquals("text", "js", ""),
 	// images
 	contenttype.NewFilterEquals("image", "gif", ""),
 	contenttype.NewFilterEquals("image", "png", ""),
@@ -256,14 +260,6 @@ func init() {
 	}
 	HTML_BODY_EXTENSION, err = template.New("html_body_extension").Parse(`
 <input type="checkbox" id="mortytoggle" autocomplete="off" />
-<div id="mortyheader">
-  <form method="get">
-    <label for="mortytoggle">hide</label>
-    <span><a href="/">Morty Proxy</a></span>
-    <input type="url" value="{{.BaseURL}}" name="mortyurl" {{if .HasMortyKey }}readonly="true"{{end}} />
-    This is a <a href="https://github.com/asciimoo/morty">proxified and sanitized</a> view of the page, visit <a href="{{.BaseURL}}" rel="noreferrer">original site</a>.
-  </form>
-</div>
 <style>
 body{ position: absolute !important; top: 42px !important; left: 0 !important; right: 0 !important; bottom: 0 !important; }
 #mortyheader { position: fixed; margin: 0; box-sizing: border-box; -webkit-box-sizing: border-box; top: 0; left: 0; right: 0; z-index: 2147483647 !important; font-size: 12px; line-height: normal; border-width: 0px 0px 2px 0; border-style: solid; border-color: #AAAAAA; background: #FFF; padding: 4px; color: #444; height: 42px; }
@@ -280,6 +276,15 @@ input[type=checkbox]#mortytoggle:checked ~ div { display: none; visibility: hidd
 	if err != nil {
 		panic(err)
 	}
+}
+
+func contains(slice []string, str string) bool {
+    for _, a := range slice {
+        if a == str {
+            return true
+        }
+    }
+    return false
 }
 
 func (p *Proxy) RequestHandler(ctx *fasthttp.RequestCtx) {
@@ -319,6 +324,7 @@ func (p *Proxy) RequestHandler(ctx *fasthttp.RequestCtx) {
 }
 
 func (p *Proxy) ProcessUri(ctx *fasthttp.RequestCtx, requestURIStr string, redirectCount int) {
+    var blockedDomains []string = []string{"chat.openai.com","openai.com", "bard.google.com", "facebook.com","instagram.com","youtube.com","bing.com"}
 	parsedURI, err := url.Parse(requestURIStr)
 
 	if err != nil {
@@ -339,6 +345,12 @@ func (p *Proxy) ProcessUri(ctx *fasthttp.RequestCtx, requestURIStr string, redir
 	// Serve an intermediate page for protocols other than HTTP(S)
 	if (parsedURI.Scheme != "http" && parsedURI.Scheme != "https") || strings.HasSuffix(parsedURI.Host, ".onion") {
 		p.serveExitMortyPage(ctx, parsedURI)
+		return
+	}
+
+	if contains(blockedDomains, parsedURI.Hostname()) {
+		log.Println(true)
+		p.serveMainPage(ctx, 403, errors.New("forbidden content type "+parsedURI.String()))
 		return
 	}
 
@@ -430,8 +442,9 @@ func (p *Proxy) ProcessUri(ctx *fasthttp.RequestCtx, requestURIStr string, redir
 
 	// content-disposition
 	contentDispositionBytes := ctx.Request.Header.Peek("Content-Disposition")
+    
+	
 
-	// check content type
 	if !ALLOWED_CONTENTTYPE_FILTER(contentType) {
 		// it is not a usual content type
 		if ALLOWED_CONTENTTYPE_ATTACHMENT_FILTER(contentType) {
