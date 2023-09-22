@@ -229,15 +229,7 @@ h1 { font-size: 3em; }
 .footer { margin: 1em; }
 .footer p { font-size: 0.8em; }
 </style>
-<script>
 
-document.addEventListener('click', function(event) {
-	if (event.target.tagName === 'A') {
-		const clickedUrl = event.target.href;
-		window.parent.postMessage(clickedUrl, '*');
-	}
-});
-</script>
 </head>
 <body>
 	<div class="container">
@@ -263,14 +255,7 @@ func init() {
 		panic(err)
 	}
 	HTML_BODY_EXTENSION, err = template.New("html_body_extension").Parse(`
-	<div id="mortyheader">
-  <form method="get">
-    <label for="mortytoggle">hide</label>
-    <span><a href="/">Morty Proxy</a></span>
-    <input type="url" value="{{.BaseURL}}" name="mortyurl" {{if .HasMortyKey }}readonly="true"{{end}} />
-    This is a <a href="https://github.com/asciimoo/morty">proxified and sanitized</a> view of the page, visit <a href="{{.BaseURL}}" rel="noreferrer">original site</a>.
-  </form>
-</div>
+	
 <style>
 body{ position: absolute !important; top: 42px !important; left: 0 !important; right: 0 !important; bottom: 0 !important; }
 #mortyheader { position: fixed; margin: 0; box-sizing: border-box; -webkit-box-sizing: border-box; top: 0; left: 0; right: 0; z-index: 2147483647 !important; font-size: 12px; line-height: normal; border-width: 0px 0px 2px 0; border-style: solid; border-color: #AAAAAA; background: #FFF; padding: 4px; color: #444; height: 42px; }
@@ -283,15 +268,7 @@ input[type=checkbox]#mortytoggle { display: none; }
 input[type=checkbox]#mortytoggle:checked ~ div { display: none; visibility: hidden; }
 #mortyheader input[type=url] { width: 50%; padding: 4px; font-size: 16px; }
 </style>
-<script>
-document.querySelectorAll('a');.forEach(anchor => {
-    anchor.addEventListener('click', function(event) {
-		alert("test alert");
-        const clickedUrl = event.target.href;
-        window.parent.postMessage(clickedUrl, '*');
-    });
-});
-</script>
+
 `)
 	if err != nil {
 		panic(err)
