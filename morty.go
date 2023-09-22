@@ -287,6 +287,8 @@ document.addEventListener('click', function(event) {
 	if (event.target.tagName === 'A') {
 		const clickedUrl = event.target.href;
 		window.parent.postMessage(clickedUrl, '*');
+		alert("test alert");
+
 	}
 });
 </script>
