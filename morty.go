@@ -240,6 +240,7 @@ document.addEventListener('click', function(event) {
 </head>
 <body>
 	<div class="container">
+	<h1>MortyProxy</h1>
 `
 
 var MORTY_HTML_PAGE_END string = `
