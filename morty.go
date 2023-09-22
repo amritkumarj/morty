@@ -229,6 +229,14 @@ h1 { font-size: 3em; }
 .footer { margin: 1em; }
 .footer p { font-size: 0.8em; }
 </style>
+<script>
+document.addEventListener('click', function(event) {
+	if (event.target.tagName === 'A') {
+		const clickedUrl = event.target.href;
+		window.parent.postMessage(clickedUrl, '*');
+	}
+});
+</script>
 </head>
 <body>
 	<div class="container">
