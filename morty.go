@@ -418,7 +418,7 @@ func (p *Proxy) ProcessUri(ctx *fasthttp.RequestCtx, requestURIStr string, redir
 	}
 
 	contentTypeBytes := resp.Header.Peek("Content-Type")
-
+	ctx.Response.Header.Add("Access-Control-Allow-Origin", "*")
 	if contentTypeBytes == nil {
 		// HTTP status code 503 : Service Unavailable
 		p.serveMainPage(ctx, 503, errors.New("invalid content type"))
