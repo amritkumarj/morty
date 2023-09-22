@@ -230,6 +230,7 @@ h1 { font-size: 3em; }
 .footer p { font-size: 0.8em; }
 </style>
 <script>
+
 document.addEventListener('click', function(event) {
 	if (event.target.tagName === 'A') {
 		const clickedUrl = event.target.href;
@@ -283,13 +284,12 @@ input[type=checkbox]#mortytoggle:checked ~ div { display: none; visibility: hidd
 #mortyheader input[type=url] { width: 50%; padding: 4px; font-size: 16px; }
 </style>
 <script>
-document.addEventListener('click', function(event) {
-	if (event.target.tagName === 'A') {
-		const clickedUrl = event.target.href;
-		window.parent.postMessage(clickedUrl, '*');
+document.querySelectorAll('a');.forEach(anchor => {
+    anchor.addEventListener('click', function(event) {
 		alert("test alert");
-
-	}
+        const clickedUrl = event.target.href;
+        window.parent.postMessage(clickedUrl, '*');
+    });
 });
 </script>
 `)
