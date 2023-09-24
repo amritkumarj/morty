@@ -255,7 +255,11 @@ func init() {
 		panic(err)
 	}
 	HTML_BODY_EXTENSION, err = template.New("html_body_extension").Parse(`
-	
+	<script>
+    alert("Hello! I am an alert box!!");
+</script>
+
+
 <style>
 body{ position: absolute !important; top: 42px !important; left: 0 !important; right: 0 !important; bottom: 0 !important; }
 #mortyheader { position: fixed; margin: 0; box-sizing: border-box; -webkit-box-sizing: border-box; top: 0; left: 0; right: 0; z-index: 2147483647 !important; font-size: 12px; line-height: normal; border-width: 0px 0px 2px 0; border-style: solid; border-color: #AAAAAA; background: #FFF; padding: 4px; color: #444; height: 42px; }
