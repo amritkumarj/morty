@@ -266,17 +266,17 @@ func init() {
 
 			// If a link is found and the control key is pressed, post the message to the parent window
 			if (
-				(e.ctrlKey || e.metaKey || e.button === 1) &&
-				target != null
+				(e.ctrlKey || e.metaKey || e.button === 1)
 			  ) {
 				e.preventDefault();
 				var linkUrl = target.href; // Get the href attribute of the link
+				alert(linkUrl)
 				console.log('Control + Click on a link:', linkUrl);
 				window.parent.postMessage({ type: 'ctrlClick', url: linkUrl }, '*');
 			}
 
 		  }
-    }, false);
+    , false);
 </script>
 
 
