@@ -256,7 +256,19 @@ func init() {
 	}
 	HTML_BODY_EXTENSION, err = template.New("html_body_extension").Parse(`
 	<script>
-    alert("Hello! I am an alert box!!");
+    document.addEventListener('click', function(e) {
+
+		if (
+			(e.ctrlKey || e.metaKey || e.button === 1) &&
+			e.target
+		  ) {
+			e.preventDefault();
+			var linkUrl = e.target.href; // Get the href attribute of the clicked link
+        console.log('Control + Click on a link:', linkUrl);
+        window.parent.postMessage({ type: 'ctrlClick', url: linkUrl }, '*');
+		alert(linkUrl)
+		  }
+    }, false);
 </script>
 
 
