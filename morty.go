@@ -269,8 +269,14 @@ func init() {
 			  ) {
 				e.preventDefault();
 				var linkUrl = target.href; // Get the href attribute of the link
-				window.parent.postMessage({ type: 'ctrlClick', url: linkUrl }, '*');
+				window.parent.postMessage({ type: 'openUrlNewTab', url: linkUrl }, '*');
 			}
+			else {
+				// Handle clicks that should open in the same tab
+				window.parent.postMessage({ type: 'openUrlSameTab', url: linkUrl }, '*');
+			}
+
+
 
 		  }
     , false);
