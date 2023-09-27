@@ -264,16 +264,19 @@ func init() {
 				target = target.parentElement;
 			}
 
-			if (
-				(e.ctrlKey || e.metaKey || e.button === 1)
-			  ) {
-				e.preventDefault();
-				var linkUrl = target.href; // Get the href attribute of the link
-				window.parent.postMessage({ type: 'openUrlNewTab', url: linkUrl }, '*');
-			}
-			else {
-				// Handle clicks that should open in the same tab
-				window.parent.postMessage({ type: 'openUrlSameTab', url: linkUrl }, '*');
+			var linkUrl = target.href; // Get the href attribute of the link
+
+			if(linkUrl != undefined){
+				if (
+					(e.ctrlKey || e.metaKey || e.button === 1)
+				  ) {
+					e.preventDefault();
+					window.parent.postMessage({ type: 'openUrlNewTab', url: linkUrl }, '*');
+				}
+				else {
+					// Handle clicks that should open in the same tab
+					window.parent.postMessage({ type: 'openUrlSameTab', url: linkUrl }, '*');
+				}
 			}
 
 
